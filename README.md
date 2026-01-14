@@ -1,5 +1,5 @@
 # ✏️ Draw Your Hero
-> [cite_start]**Let AI define your Destiny** > Proyecto Integrador Ene-Jun 2026 [cite: 2]
+> **Let AI define your Destiny** > Proyecto Integrador Ene-Jun 2026 
 
 ![Project Status](https://img.shields.io/badge/Status-Development-green?style=for-the-badge)
 ![Semester](https://img.shields.io/badge/Cycle-Ene_Jun_2026-blue?style=for-the-badge)
@@ -62,15 +62,6 @@ Para mantener el orden entre los equipos, seguimos la **Estructura Híbrida**:
     * Se utiliza para las integraciones de la Semana 3 y 4.
 
 > [cite_start]"Todos los avances se subirán a un repositorio de GitHub"[cite: 56].
-
----
-
-## 📚 Recursos Principales
-* [cite_start]**Vision:** [TensorFlow Crash Course (2026)](https://www.youtube.com/) [cite: 63]
-* [cite_start]**Render:** [R3F The Basics (Rithmic)](https://www.youtube.com/) [cite: 69]
-* [cite_start]**Server:** [Socket.IO Tutorial Spring 2025](https://github.com/) [cite: 81]
-* [cite_start]**Design:** [Figma Design for Beginners 2025](https://www.figma.com/) [cite: 89]
-* [cite_start]**General:** [GitHub Skills 2025](https://github.com/) [cite: 96]
 
 ---
 *Generated for the "Draw Your Hero" Project Team - Ene 2026.*
