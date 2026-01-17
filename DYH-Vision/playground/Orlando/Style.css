@@ -1,0 +1,21 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:rgb(255, 255, 247);
+    margin: 0;
+    padding: 20px;
+}
+
+canvas{
+    border: 1px solid black;
+    background-color:rgb(255, 255, 255);
+    cursor: crosshair;
+}
+
+button{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+}

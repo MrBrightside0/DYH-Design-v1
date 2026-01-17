@@ -24,6 +24,29 @@ Save.addEventListener("click", (e) => {
     link.href = dataUrl;
     link.download = 'dibujo.png';
     link.click();
+
+    const ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const PixelData = ImageData.data;
+
+    //  Coso sacado de Gemini para saber cómo lo puedo usar kakakakkaka
+
+    let drawnPixels = 0;
+    for (let i = 0; i < PixelData.length; i += 4) {
+        const r = PixelData[i];
+        const g = PixelData[i + 1];
+        const b = PixelData[i + 2];
+        const a = PixelData[i + 3];
+        if (r === 0 && g === 0 && b === 0 && a === 255) {
+            drawnPixels++;
+        }
+    }
+
+    console.log("Pixeles totales en el Canvas: " + PixelData.length/4 + " ö");
+    console.log("Pixeles Dibujados: " + drawnPixels + " :D");
+
+    const output = document.createElement('div');
+    output.innerHTML = `<p>Pixeles totales en el Canvas: ${PixelData.length / 4}</p><p>Pixeles Dibujados: ${drawnPixels}</p>`;
+    document.body.appendChild(output);
 });
 
 
