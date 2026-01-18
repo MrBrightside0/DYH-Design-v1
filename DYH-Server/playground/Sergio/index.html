@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat con Ping</title>
+    <style>
+      body { font-family: 'Courier New', monospace; background: #222; color: #eee; padding: 20px; }
+      #chat-box { 
+        height: 300px; border: 1px solid #444; overflow-y: scroll; 
+        background: #111; padding: 10px; margin-bottom: 10px; 
+      }
+      .mensaje { margin: 5px 0; }
+      .sistema { color: #0f0; font-weight: bold; }
+      input { padding: 10px; width: 70%; }
+      button { padding: 10px; width: 20%; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+
+    <h1>Terminal de Comunicaciones</h1>
+    
+    <div id="chat-box"></div>
+
+    <form id="formulario">
+      <input id="input-mensaje" autocomplete="off" placeholder="Escribe 'Ping' para probar..." />
+      <button>Enviar</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const formulario = document.getElementById('formulario');
+      const input = document.getElementById('input-mensaje');
+      const chatBox = document.getElementById('chat-box');
+
+      // 1. ENVIAR MENSAJE
+      formulario.addEventListener('submit', function(e) {
+        e.preventDefault(); // Evitar que se recargue la página
+        if (input.value) {
+          
+          // Enviamos un OBJETO, no solo texto
+          socket.emit('chat-mensaje', { 
+            texto: input.value,
+            horaEnvio: Date.now() // Adjuntamos la hora de salida
+          });
+
+          // (Opcional) Mostrar mi propio mensaje en pantalla inmediatamente
+          agregarMensaje(`Yo: ${input.value}`);
+          
+          input.value = '';
+        }
+      });
+
+      // 2. RECIBIR RESPUESTA DEL SERVIDOR
+      socket.on('chat-respuesta', function(data) {
+        
+        if (data.esPing) {
+          // AQUI OCURRE LA MAGIA DEL CALCULO
+          const latencia = Date.now() - data.horaOriginal;
+          agregarMensaje(`SERVIDOR: ${data.texto} ⚡ (${latencia} ms)`, 'sistema');
+        } else {
+          // Mensaje normal de otra persona
+          agregarMensaje(`Anonimo: ${data.texto}`);
+        }
+      });
+
+      // Función auxiliar para escribir en el HTML
+      function agregarMensaje(texto, claseExtra = '') {
+        const item = document.createElement('div');
+        item.textContent = texto;
+        item.className = `mensaje ${claseExtra}`;
+        chatBox.appendChild(item);
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll hacia abajo
+      }
+    </script>
+  </body>
+</html>
