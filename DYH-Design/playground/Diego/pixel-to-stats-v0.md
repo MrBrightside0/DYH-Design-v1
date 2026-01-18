@@ -15,16 +15,19 @@ y los atributos jugables antes de definir el sistema oficial.
 
 ## 📊 Stats Base (Referenciales)
 
-| Stat | Valor Base | Comentario |
-|----|-----------|-----------|
-| HP | 100 | Escala estándar |
-| ATK | 20 | Daño legible |
-| DEF | 10 | Mitigación ligera |
-| SPD | 5 | Movimiento medio |
-| AGI | 20 | Ritmo |
-| STAM | 100 | Energía |
-| HITBOX | 1.0 | Neutro |
-| BAL | 50 | Estabilidad |
+Estos valores representan un personaje "promedio", antes de aplicar modificadores derivados del dibujo
+
+| Stat | Valor Base | Rol |
+|----|-----------|----|
+| ❤️ HP | 100 | Vida estándar |
+| 🗡️ ATK | 20 | Daño base |
+| 🛡️ DEF | 10 | Mitigación |
+| ⚡ SPD | 5 | Movimiento |
+| 🤸 AGI | 20 | Respuesta |
+| 🔋 STAM | 100 | Energía |
+| 🎯 HITBOX | 1.0 | Tamaño neutro |
+| ⚖️ BAL | 50 | Estabilidad |
+
 
 ---
 
@@ -32,9 +35,23 @@ y los atributos jugables antes de definir el sistema oficial.
 
 | Variable | Rango | Idea |
 |-------|------|------|
-| PixelMass | 0–1 | Tamaño total |
+| PixelMass | 0–1 | Tamaño total de pixeles|
 | Density | 0–1 | Compactación |
 | AspectRatio | 0–1 | Proporción |
 | EdgeComplexity | 0–1 | Agresividad |
 | Symmetry | 0–1 | Control |
+
+## 🔗 Tabla Conceptual Pixel → Stats
+
+| Input | Stat Afectado | Tendencia |
+|-----|-------------|----------|
+| PixelMass | HP, HITBOX | ↑ |
+| Density | DEF | ↑ |
+| Density | SPD | ↓ |
+| EdgeComplexity | ATK | ↑ |
+| EdgeComplexity | BAL | ↓ |
+| Symmetry | AGI | ↑ |
+| AspectRatio extremo | BAL | ↓ |
+
+---
 
