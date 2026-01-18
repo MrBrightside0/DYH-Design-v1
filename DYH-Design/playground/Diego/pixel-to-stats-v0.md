@@ -73,3 +73,50 @@ siempre respetando una dirección lógica y consistente.
 
 Esta capa conceptual sirve como puente entre creatividad y sistema,
 y precede a la implementación matemática definitiva.
+
+---
+
+## 🧮 Normalización de Variables (Base matematica del sistema)
+
+Todas las variables visuales del dibujo se transforman
+a un rango normalizado entre 0 y 1.
+
+0   = valor mínimo observado  
+1   = valor máximo permitido 
+
+
+## 📐 Estructura Matemática General
+
+Stat Final = Stat Base × Modificadores del Dibujo
+
+## ⚖️ Pesos de Influencia
+
+Cada relación Pixel → Stat tiene un peso asociado
+que define su impacto relativo.
+
+Stat = Base × (1 + (Variable × Peso))
+
+## 🧪 Ejemplos de Conversión Matemática
+
+HP = HP_base × (1 + PixelMass × w_hp)
+
+DEF = DEF_base × (1 + Density × w_def)
+
+SPD = SPD_base × (1 − Density × w_spd)
+
+ATK = ATK_base × (1 + EdgeComplexity × w_atk)
+
+## 🚧 Límites de Seguridad
+
+Todos los stats finales están limitados por rangos máximos y mínimos.
+
+Stat_final = clamp(Stat_final, Min, Max)
+
+---
+
+## 🧠 Principios Matemáticos del Sistema
+
+- No existen builds perfectas
+- Todo poder tiene un costo
+- Las variables visuales generan consecuencias
+- El balance se logra por oposición, no por prohibición
