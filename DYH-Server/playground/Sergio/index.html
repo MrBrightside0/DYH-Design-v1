@@ -26,50 +26,63 @@
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
       const formulario = document.getElementById('formulario');
       const input = document.getElementById('input-mensaje');
       const chatBox = document.getElementById('chat-box');
 
-      // 1. ENVIAR MENSAJE
+      // --- ENVIAR MENSAJE ---
       formulario.addEventListener('submit', function(e) {
-        e.preventDefault(); // Evitar que se recargue la página
-        if (input.value) {
-          
-          // Enviamos un OBJETO, no solo texto
-          socket.emit('chat-mensaje', { 
-            texto: input.value,
-            horaEnvio: Date.now() // Adjuntamos la hora de salida
-          });
-
-          // (Opcional) Mostrar mi propio mensaje en pantalla inmediatamente
-          agregarMensaje(`Yo: ${input.value}`);
-          
+        e.preventDefault();
+        const texto = input.value.trim();
+        
+        if (texto) {
+          // Lógica de Comandos
+          if (texto.toLowerCase() === 'estado') {
+            if (socket.connected) {
+              socket.emit('verificar-estado'); // Enviamos la orden al server
+            } else {
+              agregarMensaje('❌ Error: No hay conexión con el servidor.', 'sistema');
+            }
+          } 
+          else if (texto.toLowerCase() === 'ping') {
+            socket.emit('chat-mensaje', { texto: 'Ping', horaEnvio: Date.now() });
+          } 
+          else {
+            // Mensaje normal
+            socket.emit('chat-mensaje', { texto: texto, horaEnvio: Date.now() });
+            agregarMensaje(`Yo: ${texto}`);
+          }
           input.value = '';
         }
       });
 
-      // 2. RECIBIR RESPUESTA DEL SERVIDOR
+      // --- RECIBIR RESPUESTA ---
       socket.on('chat-respuesta', function(data) {
         
-        if (data.esPing) {
-          // AQUI OCURRE LA MAGIA DEL CALCULO
+        // CASO 1: Mensaje del Sistema (Estado)
+        if (data.esSistema) {
+          agregarMensaje(`SISTEMA: ${data.texto}`, 'sistema');
+        } 
+        // CASO 2: Respuesta de Ping
+        else if (data.esPing) {
           const latencia = Date.now() - data.horaOriginal;
           agregarMensaje(`SERVIDOR: ${data.texto} ⚡ (${latencia} ms)`, 'sistema');
-        } else {
-          // Mensaje normal de otra persona
+        } 
+        // CASO 3: Chat Normal
+        else {
           agregarMensaje(`Anonimo: ${data.texto}`);
         }
       });
 
-      // Función auxiliar para escribir en el HTML
       function agregarMensaje(texto, claseExtra = '') {
         const item = document.createElement('div');
         item.textContent = texto;
         item.className = `mensaje ${claseExtra}`;
         chatBox.appendChild(item);
-        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll hacia abajo
+        chatBox.scrollTop = chatBox.scrollHeight;
       }
     </script>
   </body>
