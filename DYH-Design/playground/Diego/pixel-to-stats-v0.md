@@ -55,3 +55,21 @@ Estos valores representan un personaje "promedio", antes de aplicar modificadore
 
 ---
 
+### 🧠 Lógica de Conversión Pixel → Stats
+
+La tabla Pixel → Stats define cómo las características visuales del dibujo
+se traducen en consecuencias jugables medibles.
+
+El sistema no premia un “dibujo correcto”, sino decisiones visuales
+que generan **trade-offs claros** entre poder, control y riesgo.
+
+Cada variable del dibujo afecta una o más estadísticas,
+siempre respetando una dirección lógica y consistente.
+
+- Dibujos grandes son más resistentes, pero más expuestos.
+- Dibujos compactos son más sólidos, pero menos ágiles.
+- Dibujos agresivos golpean más fuerte, pero son inestables.
+- Dibujos balanceados ofrecen mejor control y respuesta.
+
+Esta capa conceptual sirve como puente entre creatividad y sistema,
+y precede a la implementación matemática definitiva.
