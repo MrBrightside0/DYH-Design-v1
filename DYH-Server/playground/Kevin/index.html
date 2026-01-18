@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat de Texto</title>
+</head>
+<body>
+  <h2>:) Chat Lobby</h2>
+
+  <input id="message" placeholder="Escribe un mensaje" />
+  <button onclick="sendMessage()">Enviar</button>
+
+  <p id="latency">Latencia: -- ms</p>
+
+  <ul id="messages"></ul>
+
+  <!-- Socket.io cliente -->
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+  <script>
+    const socket = io("http://localhost:3000");
+
+    // Conexión al servidor
+    socket.on("connect", () => {
+      console.log("Conectado al servidor");
+    });
+
+    // Recibir mensajes del chat
+    socket.on("chat-message", (msg) => {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("messages").appendChild(li);
+    });
+
+    // Enviar mensaje
+    function sendMessage() {
+      const input = document.getElementById("message");
+      socket.emit("chat-message", input.value);
+      input.value = "";
+    }
+
+    // Medición de latencia (PING)
+    setInterval(() => {
+      socket.emit("ping-latency", Date.now());
+    }, 2000);
+
+    // Respuesta del servidor (PONG)
+    socket.on("pong-latency", (startTime) => {
+      const latency = Date.now() - startTime;
+      document.getElementById("latency").textContent =
+        "Latencia: " + latency + " ms";
+    });
+  </script>
+</body>
+</html>
