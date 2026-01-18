@@ -1,43 +1,47 @@
 const express = require('express');
-const { createServer } = require('node:http');
-const { join } = require('node:path');
-const { Server } = require('socket.io');
-
 const app = express();
-const server = createServer(app);
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
+  res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado:', socket.id);
 
-  // Escuchamos el evento 'chat-mensaje'
-  socket.on('chat-mensaje', (paquete) => {
+  // 1. ESCUCHAR PETICIÓN DE ESTADO
+  socket.on('verificar-estado', () => {
+    console.log(`El usuario ${socket.id} preguntó por el estado.`); // Log para debug
     
-    // 1. Verificamos si el usuario escribió "Ping" (ignorando mayúsculas/minúsculas)
+    // Respondemos al usuario marcando el mensaje como 'esSistema'
+    socket.emit('chat-respuesta', {
+      texto: '✅ Conexión exitosa: El servidor te escucha fuerte y claro.',
+      esSistema: true 
+    });
+  });
+
+  // 2. CHAT Y PING
+  socket.on('chat-mensaje', (paquete) => {
     if (paquete.texto.toLowerCase() === 'ping') {
-      
-      // 2. El servidor responde SOLO al usuario que preguntó (socket.emit)
-      // Devolvemos la misma estampa de tiempo que nos envió el cliente
       socket.emit('chat-respuesta', {
         texto: 'Pong',
         esPing: true,
-        horaOriginal: paquete.horaEnvio // its so peak, es clave Bv
+        horaOriginal: paquete.horaEnvio
       });
-
     } else {
-      // Si es un mensaje normal, lo enviamos a TODOS (io.emit)
+      // Mensaje normal
       io.emit('chat-respuesta', {
         texto: paquete.texto,
-        esPing: false
+        esPing: false,
+        esSistema: false
       });
     }
   });
 });
 
 server.listen(3000, () => {
-  console.log('server running at http://localhost:3000');
+  console.log('Servidor corriendo en http://localhost:3000');
 });
