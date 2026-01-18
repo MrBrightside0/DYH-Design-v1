@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Draw Your Hero – Vision Squad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <h1>Draw Your Hero</h1>
+      <p>Dibuja a tu héroe, plasma todas tus ideas usando esta herramienta ❗</p>
+      <p class="hint">Puedes pegar una imagen del portapapeles y dibujar sobre ella 🗣️🗣️</p>
+    </header>
+
+    <div class="controls">
+      <div class="control">
+        <label>Color</label>
+        <input type="color" id="colorPicker">
+      </div>
+
+      <div class="control">
+        <label>Grosor</label>
+        <input type="range" id="lineWidth" min="1" max="30" value="5">
+      </div>
+
+      <button id="penBtn" class="tool active">Lápiz</button>
+      <button id="eraserBtn" class="tool">Borrador</button>
+
+      <button id="undoBtn" class="icon-btn">↶</button>
+      <button id="redoBtn" class="icon-btn">↷</button>
+
+      <button id="clearBtn" class="tool danger">Limpiar</button>
+    </div>
+
+    <canvas id="drawCanvas" width="600" height="400"></canvas>
+
+    <footer>
+      <span>Vision Squad · Marina Maldonado</span>
+    </footer>
+  </div>
+
+  <script src="canvas.js"></script>
+</body>
+</html>
