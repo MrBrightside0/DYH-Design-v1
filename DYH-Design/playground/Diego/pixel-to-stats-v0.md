@@ -25,3 +25,16 @@ y los atributos jugables antes de definir el sistema oficial.
 | STAM | 100 | Energía |
 | HITBOX | 1.0 | Neutro |
 | BAL | 50 | Estabilidad |
+
+---
+
+## ✏️ Variables del Dibujo (Inputs)
+
+| Variable | Rango | Idea |
+|-------|------|------|
+| PixelMass | 0–1 | Tamaño total |
+| Density | 0–1 | Compactación |
+| AspectRatio | 0–1 | Proporción |
+| EdgeComplexity | 0–1 | Agresividad |
+| Symmetry | 0–1 | Control |
+
