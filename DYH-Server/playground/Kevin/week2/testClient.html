@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prueba Movimiento</title>
+</head>
+<body>
+  <h2>Test Movimiento</h2>
+  <button onclick="sendMove()">Enviar movimiento</button>
+
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io("http://localhost:3000");
+
+    socket.on("connect", () => {
+      console.log("Conectado como cliente de prueba");
+    });
+
+    socket.on("player-move", (data) => {
+      console.log("Movimiento sincronizado:", data);
+    });
+
+    function sendMove() {
+      const move = {
+        x: Math.floor(Math.random() * 100),
+        y: Math.floor(Math.random() * 100),
+        z: Math.floor(Math.random() * 10)
+      };
+
+      console.log("Enviando movimiento:", move);
+      socket.emit("player-move", move);
+    }
+  </script>
+</body>
+</html>
