@@ -138,3 +138,28 @@ La Arena representa el núcleo del gameplay. Aquí se ejecutan los combates y se
 ## 🔄 3. Flujos de Navegación
 
 ### 🧭 Flujo Principal
+
+---
+
+### 🔀 Flujos Alternos
+
+- ❌ Derrota → regreso directo al Laboratorio
+- 🚫 Recursos insuficientes → bloqueo de mejoras
+- 💀 Vida en 0 → penalización o reinicio
+
+---
+
+## 🧠 4. Estados del Jugador
+
+### 📍 Estados Definidos
+
+- 💤 IDLE → jugador en laboratorio
+- 🛠️ PREPARING → configuración de stats e ítems
+- ⚔️ IN_COMBAT → combate activo
+- 🏆 VICTORY → combate ganado
+- ❌ DEFEAT → combate perdido
+
+**Función:**
+Estos estados servirán como base para la lógica del juego, control de flujo y futuras implementaciones en código.
+
+---
