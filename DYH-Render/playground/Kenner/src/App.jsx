@@ -1,52 +1,113 @@
 import { Canvas, useFrame } from "@react-three/fiber"
 import './App.css'
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react" 
 
-const Cube = ({position, size, color}) => {
-  
+
+const Sphere = ({ position, size, colorBase }) => {
   const ref = useRef()
+
+  // Mouse
+  const [isHovered, setIsHovered] = useState(false)
+  const [isClicked, setIsClicked] = useState(false)
+
+  // Teclado
+  const keys = useRef({})
+
   
+  useEffect(() => {
+    const handleKeyDown = (e) => { keys.current[e.code] = true }
+    const handleKeyUp = (e) => { keys.current[e.code] = false }
+
+    window.addEventListener("keydown", handleKeyDown)
+    window.addEventListener("keyup", handleKeyUp)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      window.removeEventListener("keyup", handleKeyUp)
+    }
+  }, [])
+
   useFrame((state, delta) => {
-    ref.current.rotation.x += delta //delta es el tiempo en segundos entre frames
-    ref.current.rotation.y += delta * 2.0
-    ref.current.position.x = Math.sin(state.clock.elapsedTime) * 2.0
-     ref.current.position.y = Math.cos(state.clock.elapsedTime) * 2.0
-    console.log(state)
-  })  
-  
+    //movimiento
+    const speed = 5 * delta // Velocidad de movimiento
+
+    if (keys.current["KeyW"] || keys.current["ArrowUp"])    ref.current.position.y += speed
+    if (keys.current["KeyS"] || keys.current["ArrowDown"])  ref.current.position.y -= speed
+    if (keys.current["KeyD"] || keys.current["ArrowRight"]) ref.current.position.x += speed
+    if (keys.current["KeyA"] || keys.current["ArrowLeft"])  ref.current.position.x -= speed
+
+
+    ref.current.rotation.y += delta * (isHovered ? 2 : 0.5) // rota mas rapido si esta el mouse encima
+  })
 
   return (
-   <mesh position={position} ref = {ref}> // todo lo que hicimos en la caja va a adentro del mesh
-         <boxGeometry args={size}/>
-         <meshStandardMaterial color={color}/>
-      </mesh>
-
+    <mesh
+      position={position}
+      ref={ref}
+      // Eventos del Mouse
+      onPointerEnter={(e) => { e.stopPropagation(); setIsHovered(true) }}
+      onPointerLeave={() => setIsHovered(false)}
+      onClick={() => setIsClicked(!isClicked)}
+      scale={isClicked ? 1.5 : 1} // Crece si le das click
+    >
+      <sphereGeometry args={size} />
+      {/* Cambia de color: Verde (Click), Naranja (Hover), Azul (Normal) */}
+      <meshStandardMaterial 
+        color={isClicked ? "green" : (isHovered ? "orange" : colorBase)} 
+        wireframe 
+      />
+    </mesh>
   )
-
 }
 
 
- const App = () => {
+const Cube = ({ position, size, color }) => {
+  const ref = useRef()
+  useFrame((state, delta) => {
+    ref.current.rotation.x += delta 
+    ref.current.rotation.y += delta * 2.0
+  })
+  return (
+    <mesh position={position} ref={ref}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
+
+const Torus = ({ position, size, color }) => {
+  return (
+    <mesh position={position}>
+      <torusGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
+
+const TorusKnot = ({ position, size, color }) => {
+  const ref = useRef()
+  useFrame((state, delta) => {
+    ref.current.rotation.x += delta
+    ref.current.rotation.y += delta * 2.0
+  })
+  return (
+    <mesh position={position} ref={ref}>
+      <torusKnotGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
+
+//APP PRINCIPAL
+const App = () => {
   return (
     <Canvas>
-     
-      *<directionalLight position={[0,0,2]} /> 
-      <ambientLight />
-      //la iluminacion va afuera del mesh
-      // todo lo que hicimos en la caja va a adentro del mesh
+      <directionalLight position={[0, 0, 5]} intensity={1} />
+      <ambientLight intensity={0.5} />
 
-      {/*<group position={[-1,-1,0]}>                                         
-      <Cube position={[0,0,0]} color={"green"} size={[1,1,1]} />
-
-      <Cube position={[2,0,0]} color={"red"} size={[1,1,1]} />
-
-      <Cube position={[2,2,0]} color={"blue"} size={[1,1,1]} />
-
-      <Cube position={[0,2,0]} color={"orange"} size={[1,1,1]} />
-      </group>*/}
-
-        <Cube position={[0,0,0]} size={[1,1,1,]} color={"red"}/>
       
+      <Sphere position={[0, 0, 0]} size={[1, 32, 32]} colorBase="lightblue" />
+
     </Canvas>
   )
 }
