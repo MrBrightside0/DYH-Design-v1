@@ -7,7 +7,6 @@ let start = false;
 //  FUNCION NUEVA PARA CÁLCULO DE MASA Y CENTROIDE
 
 function PixelProcessing(PixelData){
-    let drawnPixels = 0;
     let MasaTotal = 0;
     let xSuma = 0;
     let ySuma = 0;
@@ -72,13 +71,18 @@ Save.addEventListener("click", (e) => {
 function draw(e){
     if (start){
         if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.strokeStyle = "black";
-        ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        ctx.lineTo(x, y);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        ctx.moveTo(x, y);
     }
 }
 
