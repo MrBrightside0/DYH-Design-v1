@@ -1,0 +1,98 @@
+//hola jeje
+
+App.jsx → estructura
+
+Controls.jsx → nombres de inputs
+
+Experience.jsx → comportamiento del mundo
+
+useFrame → movimiento
+
+KeyboardControls → traducción de teclas
+
+const TorusKnot = ({position, size}) => {
+
+  const ref = useRef()
+
+  const {color, radius} = useControls({
+    color:"lightblue",
+    radius:{
+      value:5,
+      min: 1,
+      max: 10,
+      step: 0.5,
+    }
+  })
+
+  // useFrame((state, delta) => {
+  //   ref.current.rotation.x += delta
+  //   ref.current.rotation.y += delta 
+  //   ref.current.position.z = Math.sin(state.clock.elapsedTime) *2
+  //   console.log(state.clock.elapsedTime)
+  // })
+
+  return (
+    <mesh position={position} ref={ref} >
+      <torusKnotGeometry arg={[radius, ...size]} />
+      {/* <meshStandardMaterial color={color} /> */}
+      <MeshWobbleMaterial  factor={5} speed={2} color={color} />
+    </mesh>
+  )
+}
+
+
+===============================
+ // const directionalLightRef = useRef()
+
+  // const {lightColor, lightIntensity} = useControls({
+  //   lightColor: "white",
+  //   lightIntensity: {
+  //     value: 0.5,
+  //     min: 0,
+  //     max: 5,
+
+  //   }
+  // })
+
+  // useHelper(directionalLightRef, DirectionalLightHelper, 0.5, "white")
+{/* <directionalLight position={[0, 1, 2]} intensity={lightIntensity} ref={directionalLightRef} color={lightColor} /> */}
+
+=============================================
+const Sphere = ({position, size, color}) => {
+
+  const ref = useRef()
+
+  const [isHovered, setIsHovered] = useState(false)
+  const [isClicked, setIsClicked] = useState(false)
+
+  useFrame((state, delta) => {
+    const speed = isHovered ? 1 : 0.2
+    ref.current.rotation.y += delta * speed
+  })
+
+  return (
+    <mesh 
+    position={position} 
+    ref={ref} 
+    onPointerEnter={(event) => (event.stopPropagation(), setIsHovered(true))} 
+    onPointerLeave={() => setIsHovered(false)}
+    onClick={() => setIsClicked(!isClicked)}
+    scale={isClicked ? 1.5 : 1}
+    >
+      <sphereGeometry arg={size} />
+      <meshStandardMaterial color={isHovered ? "orange" : "lightblue"} wireframe />
+    </mesh>
+  )
+}
+
+
+const Scene = () => {
+  return (
+    <>
+      <directionalLight position={[0, 1, 2]} />
+      <ambientLight />
+      <Sphere position={[0, 0, 0]} size={[2, 0, 3]} color={"purple"} />
+      <OrbitControls enableZoom={false} />
+    </>
+  )
+}
