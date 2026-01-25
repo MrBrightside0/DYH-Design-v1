@@ -38,5 +38,26 @@ button {
 }
 
 button:hover {
-    background-color: #cacaca; /* Un tono más oscuro al pasar el mouse */
+    background-color: #cacaca;
+}
+
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 15px;
+}
+
+.stat-box {
+    background: #333;
+    color: #0f0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+}
+
+.stat-label {
+    font-weight: bold;
+    margin-right: 10px;
 }

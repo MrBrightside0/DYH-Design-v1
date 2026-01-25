@@ -39,9 +39,19 @@ function PixelProcessing(PixelData){
     
     let Centroide = [Xcentro, Ycentro];
 
-    const output = document.createElement('div');
-    output.innerHTML = `<p>Masa del Dibujo: ${MasaTotal}</p><p>Centroide del Dibujo: ${Centroide}</p>`;
-    document.body.appendChild(output);
+    document.getElementById('masa').innerText = MasaTotal.toFixed(2);
+    document.getElementById('centroide').innerText = `(${Xcentro.toFixed(2)}, ${Ycentro.toFixed(2)})`;
+
+    return { x: Xcentro, y: Ycentro }
+}
+
+function drawCentroid(Xcentro, Ycentro){ // Se dibuja el centroide en el dibujo y se vea insano
+    ctx.beginPath();
+    ctx.arc(Xcentro, Ycentro, 5, 0 ,2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.strokeStyle = "white";
+    ctx.stroke();
 }
 
 //  ------ USO DE BOTONES ------
@@ -61,7 +71,8 @@ Save.addEventListener("click", (e) => {
     const ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const PixelData = ImageData.data;
 
-    PixelProcessing(PixelData) // Aqui se usa la papufunción B)
+    const centroide = PixelProcessing(PixelData); // Aqui se usa la papufunción B)
+    drawCentroid(centroide.x, centroide.y);
 });
 
 
