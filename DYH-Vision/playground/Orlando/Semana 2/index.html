@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>HOLA PAPU</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='Style.css'>
+</head>
+<body>
+    <h1>HOLA PAPU</h1>
+    <p>Para empezar a dibujar, tienes que seleccionar START. Puedes usar el botón CLEAR para borrar. Cuando termines presiona SAVE para guardar tu dibujo ;)</p>
+    <div class="toolbar">
+        <button id="start">START</button>
+        <button id="clear">CLEAR</button>
+        <button id="save">SAVE</button>
+    </div>
+    <div class="Calculos">
+        <div class="DrawInfo">
+            <span class="stat-label">Masa Total:</span>
+            <span id="masa" class="stat-value">0</span>
+        </div>
+        <div class="DrawInfo">
+            <span class="stat-label">Centroide (x, y):</span>
+            <span id="centroide" class="stat-value">0, 0</span>
+        </div>
+    </div>
+
+    <canvas id="Canvas" width="900" height="650"></canvas>
+
+    <script src='Canvas.js'></script>
+</body>
+</html>
