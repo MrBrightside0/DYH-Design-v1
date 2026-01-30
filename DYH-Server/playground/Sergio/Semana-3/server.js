@@ -42,6 +42,32 @@ io.on('connection', (socket) => {
   });
 });
 
+
+io.on('connection', (socket) => {
+    // console.log para debugging
+    console.log('Nuevo jugador:', socket.id);
+
+    socket.on('mover-personaje', (datos) => {
+        
+        // EMPAQUETAMOS TODO
+        const paqueteDeMovimiento = {
+            id: socket.id,
+            x: datos.x,
+            y: datos.y,
+            z: datos.z,
+            color: datos.color // <--- ¡IMPORTANTE! Reenviamos el color
+        };
+
+        // El servidor actúa como espejo para los DEMÁS
+        socket.broadcast.emit('posicion-actualizada', paqueteDeMovimiento);
+    });
+
+    // Limpieza básica para que no queden fantasmas
+    socket.on('disconnect', () => {
+        io.emit('jugador-desconectado', socket.id);
+    });
+});
+
 server.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
