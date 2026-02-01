@@ -4,6 +4,8 @@ const ctx = canvas.getContext("2d");
 let drawing = false;
 let start = false;
 
+//  FUNCIÓN PARA HACERLO OBJETO 
+
 function makeObj(x, y, M){
     let Dibujo = {
         centroide : {x : 0, y : 0},
@@ -59,7 +61,7 @@ function PixelProcessing(PixelData){
     return { x: Xcentro, y: Ycentro, M: MasaTotal }
 }
 
-function drawCentroid(Xcentro, Ycentro){ // Se dibuja el centroide en el dibujo y se vea insano
+function drawCentroid(Xcentro, Ycentro){
     ctx.beginPath();
     ctx.arc(Xcentro, Ycentro, 5, 0 ,2 * Math.PI);
     ctx.fillStyle = "red";
@@ -85,10 +87,10 @@ Save.addEventListener("click", (e) => {
     const ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const PixelData = ImageData.data;
 
-    const centroide = PixelProcessing(PixelData); // Aqui se usa la papufunción B)
+    const centroide = PixelProcessing(PixelData); 
     drawCentroid(centroide.x, centroide.y);
 
-    makeObj(centroide.x, centroide.y, centroide.M);
+    makeObj(centroide.x, centroide.y, centroide.M); // Aqui se usa la papufunción B)
 });
 
 
