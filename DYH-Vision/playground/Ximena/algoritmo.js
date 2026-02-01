@@ -29,7 +29,10 @@ function calculos(ctx, canvas) {
   };
 }
 
+
 canvas.addEventListener("pointerup", () => {
   const result = calculos(ctx, canvas);
   console.log(result);
+  console.log(JSON.stringify(result, null, 2));
 });
+
