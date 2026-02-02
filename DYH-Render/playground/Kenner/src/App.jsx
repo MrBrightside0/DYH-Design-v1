@@ -7,7 +7,6 @@ import * as THREE from "three"
 import { io } from "socket.io-client";
 import { SkeletonUtils } from "three-stdlib";
 
-// CORRECCIÓN IMPORTANTE: Socket fuera de los componentes para evitar bucles
 const socket = io("http://localhost:3000");
 
 const Model3D = ({isMoving, isAttacking}) => {
@@ -18,7 +17,6 @@ const Model3D = ({isMoving, isAttacking}) => {
   const {actions} = useAnimations(animations, clone) // para las acciones play, stop, fade
 
   
-
   useEffect(() => {
   
   const ataque = actions ["Dagger_Attack2"]  
@@ -64,7 +62,6 @@ const Player = ({position}) => { // el jugador
   const [moving, setIsMoving] = useState (false) // estado para ver si se esta moviendo, por predeterminado en false (quieto)
   const [attacking, setIsAttaking] = useState (false) // estado para ver si esta atacando por predeterminado en false (no ataca)
 
-  // CORRECCIÓN: Unifiqué los dos useEffects en uno solo para optimizar rendimiento
   useEffect(() => { // useEffect para el teclado y mouse
     const handleKeyDown = (e) => { keys.current[e.code] = true }
     const handleKeyUp = (e) => { keys.current[e.code] = false }
@@ -74,8 +71,7 @@ const Player = ({position}) => { // el jugador
         setIsAttaking(true)
         console.log("Hyaaaa muere claudia sheinbun") // gritito de ataque que ojala en algun momento tenga sonido
 
-        // CORRECCIÓN: Enviamos el ataque al servidor aquí mismo
-        socket.emit("mover-personaje",{
+        socket.emit("mover-personaje",{ // enviar ataque al server
           x: ref.current.position.x,
           y: ref.current.position.y,
           z: ref.current.position.z,
@@ -117,7 +113,6 @@ const Player = ({position}) => { // el jugador
 
     if (seMueve){ // enviar datos al servidor si me muevo
       
-      // CORRECCIÓN: Eliminado el console.log que causaba LAG
       socket.emit("mover-personaje", {
             x: ref.current.position.x,
             y: ref.current.position.y,
