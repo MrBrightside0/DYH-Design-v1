@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Control de Movimiento</title>
+    <style>
+        body { font-family: monospace; background: #222; color: #fff; text-align: center; margin-top: 50px; }
+        #coords { font-size: 3em; color: #0f0; margin: 20px; }
+        .instrucciones { color: #aaa; }
+    </style>
+</head>
+<body>
+
+    <h1>Simulador de Coordenadas</h1>
+    <p class="instrucciones">Usa las flechas del teclado (ARRIBA/ABAJO/IZQ/DER) para moverte.</p>
+    
+    <div id="coords">X: 0 | Y: 0 | Z: 0</div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        
+        // Coordenadas iniciales
+        let posicion = { x: 0, y: 0, z: 0 };
+
+        const display = document.getElementById('coords');
+
+        document.addEventListener('keydown', (event) => {
+        
+            // Esto evita que la página web haga scroll cuando presionas teclas de juego
+            if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(event.code) > -1) {
+                event.preventDefault();
+            }
+
+            // Lógica de movimiento
+            switch(event.key) {
+                // Eje Z (Profundidad: Adelante/Atrás)
+                case 'ArrowUp':    posicion.z -= 1; break; 
+                case 'ArrowDown':  posicion.z += 1; break;
+                
+                // Eje X (Lateral: Izquierda/Derecha)
+                case 'ArrowLeft':  posicion.x -= 1; break;
+                case 'ArrowRight': posicion.x += 1; break;
+                
+                // Eje Y (Altura: Arriba/Abajo)
+                case ' ':          posicion.y += 1; break; // Subir
+                case 'Shift':      posicion.y -= 1; break; // Bajar (NUEVO)
+                
+                default: return; // Salir si no es una tecla de juego
+            }
+
+            actualizarDisplay();
+            
+            // Enviamos el paquete JSON al servidor
+            socket.emit('mover-personaje', posicion);
+        });
+
+        function actualizarDisplay() {
+            display.innerText = 
+                `X: ${posicion.x} | Y: ${posicion.y} | Z: ${posicion.z}`;
+            
+            // Feedback visual simple: cambiar color si subes mucho
+            if (posicion.y > 5) display.style.color = '#ff0'; // Amarillo si vuelas alto
+            else display.style.color = '#0f0'; // Verde en el suelo
+        }
+
+        socket.on('actualizar-posicion', (nuevosDatos) => {
+        // 1. Actualizamos la variable local con lo que llegó del juego
+        posicion = nuevosDatos; 
+        
+        // 2. Actualizamos el texto en pantalla
+        actualizarDisplay();
+    });
+    </script>
+</body>
+</html>
