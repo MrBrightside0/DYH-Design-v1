@@ -18,16 +18,16 @@ y los atributos jugables antes de definir el sistema oficial.
 Estos valores representan un personaje "promedio", antes de aplicar modificadores derivados del dibujo
 
 | Stat | Valor Base | Rol |
-|----|-----------|----|
+| :--- | :--- | :--- |
 | ❤️ HP | 100 | Vida estándar |
-| 🗡️ ATK | 20 | Daño base |
+| 🗡️ ATK| 20 | Daño base |
 | 🛡️ DEF | 10 | Mitigación |
 | ⚡ SPD | 5 | Movimiento |
+| 🏹 **RNG** | **5.0** | **Alcance de ataque** |
 | 🤸 AGI | 20 | Respuesta |
 | 🔋 STAM | 100 | Energía |
 | 🎯 HITBOX | 1.0 | Tamaño neutro |
 | ⚖️ BAL | 50 | Estabilidad |
-
 
 ---
 
@@ -44,15 +44,15 @@ Estos valores representan un personaje "promedio", antes de aplicar modificadore
 ## 🔗 Tabla Conceptual Pixel → Stats
 
 | Input | Stat Afectado | Tendencia |
-|-----|-------------|----------|
-| PixelMass | HP, HITBOX | ↑ |
-| Density | DEF | ↑ |
-| Density | SPD | ↓ |
-| EdgeComplexity | ATK | ↑ |
-| EdgeComplexity | BAL | ↓ |
-| Symmetry | AGI | ↑ |
-| AspectRatio extremo | BAL | ↓ |
-
+| :--- | :--- | :--- |
+| PixelMass | HP, HITBOX | ↑ (Sube) |
+| Density | DEF | ↑ (Sube) |
+| Density | SPD | ↓ (Baja) |
+| EdgeComplexity | ATK | ↑ (Sube) |
+| EdgeComplexity | BAL | ↓ (Baja) |
+| Symmetry | AGI | ↑ (Sube) |
+| AspectRatio | **RNG** | **↑ (Sube)** |
+| AspectRatio | BAL | ↓ (Baja si es extremo) |
 ---
 
 ### 🧠 Lógica de Conversión Pixel → Stats
@@ -158,6 +158,7 @@ SPD = SPD_base × (1 − Density × w_spd)
 
 ATK = ATK_base × (1 + EdgeComplexity × w_atk)
 
+RNG = RNG_base x (1 + AspectRatio x w_rng)
 
 **Empieza en HP base**
 
