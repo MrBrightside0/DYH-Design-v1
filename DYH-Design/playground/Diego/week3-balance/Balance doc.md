@@ -1,8 +1,6 @@
 # 🧪 Semana 3: Probando el Balance (Paper Prototyping)
-
-> **Estado:** Listo ✅  
-> **Resumen:** Hicimos pelear a los dibujos en papel para asegurarnos de que el juego sea justo (tipo Piedra, Papel o Tijera).
-
+ 
+**Resumen**: Hicimos resumen de las estadisticas para diferenciar las estadisticas y quien puede ganarle a su oponente, debilidad y fortalezas del rol.
 ---
 
 ## 🎭 1. Los 4 Roles Principales
@@ -10,12 +8,12 @@
 Después de revisar los datos, estos son los 4 tipos de personajes definidos.  
 Aquí están sus stats finales, incluyendo cuánta vida tienen y su rango de ataque.
 
-| Icono | Arquetipo | Vida (HP) | Stats Clave | Fuerte contra 🟢 | Débil contra 🔴 |
-|:---:|:---|:---:|:---|:---|:---|
-| 🏹 | **Francotirador** | **5** (Papel) | Rango: 10, Daño: 8, Vel: 2 | **Tanques** *(Lentos)* | **Asesinos** *(Rápidos)* |
-| 🗡️ | **Asesino** | **5** (Papel) | Vel: 8, Daño: 6, Rango: 4 | **Snipers** *(Frágiles)* | **Tanques** *(Duros)* |
-| 🛡️ | **Tanque** | **8** (Muro) | Def: 8, Rango: 4, Vel: 3 | **Asesinos** *(Poco daño)* | **Snipers** *(Kiteo)* |
-| ⚔️ | **Soldado** | **6** (Normal) | Todo: 6, Rango: 6, Vel: 6 | **Nadie** *(Neutro)* | **Nadie** *(Neutro)* |
+| Icono | Arquetipo | Vida (HP) | Stats Clave |
+|:---:|:---|:---:|:---|
+| 🏹 | **Francotirador** | **5** (Papel) | Rango: 10, Daño: 8, Vel: 2 |
+| 🗡️ | **Asesino** | **5** (Papel) | Vel: 8, Daño: 6, Rango: 4 |
+| 🛡️ | **Tanque** | **8** (Muro) | Def: 8, Rango: 4, Vel: 3 |
+| ⚔️ | **Soldado** | **6** (Normal) | Todo: 6, Rango: 6, Vel: 6 |
 
 > **Nota:**  
 > * **HP 5:** Se muere de 2 o 3 golpes fuertes.  
@@ -42,10 +40,4 @@ Simulamos combates 1 contra 1 y así quedó el balance del juego:
 
 ---
 
-## 🎨 3. ¿Cómo lo va a ver el jugador?
-
-Para que no tengan que leer números aburridos, vamos a poner un **Gráfico de Radar** antes de pelear:
-
-* Pico hacia arriba 👉 **Sniper**
-* Pico a la derecha 👉 **Asesino**
-* Gráfico “gordo” abajo 👉 **Tanque**
+link del figma: https://www.figma.com/design/GuA19y0oAe4wpvzyJ4VLUB/Draw-my-hero?node-id=0-1&t=AEeOkpdX89Ejg8w0-1
