@@ -5,6 +5,7 @@ import { useMemo } from "react"
 import { Experience } from "./Experience"
 import { KeyboardControls } from "@react-three/drei"
 import { Controls } from "./Controls"
+import { SocketManager } from "./SocketManager"
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 
   return(
     <> 
+      <SocketManager />
       <KeyboardControls map={map}>
         <Canvas >
           <Experience />

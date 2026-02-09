@@ -1,23 +1,32 @@
 import { useFrame } from "@react-three/fiber"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 // import { OrbitControls } from "@react-three/drei"
-import { Mesh } from "three"
+import { Mesh, Vector3 } from "three"
 import { useKeyboardControls, useCursor } from "@react-three/drei"
 import { Controls } from "./Controls"
+import { socket } from "./SocketManager"
 
-const movement_speed = 0.01
+
+
+const movement_speed = 0.05
 
 interface SphereProps {
     positionX?: number,
     positionY?: number,
     positionZ?: number,
+    isLocal?: boolean
 }
 
 export const Sphere = ({
     positionX = 0,
     positionY = 0,
     positionZ = 0,
+    isLocal = false,
 }: SphereProps) => {
+
+    const ref = useRef<Mesh>(null!)
+    const [position, setPosition] = useState<[number, number, number]>([ positionX, positionY, positionZ ])
+
     const [isHovered, setIsHovered] = useState(false)
     useCursor(isHovered)
     const [selected, setSelected] = useState(false)
@@ -43,20 +52,40 @@ export const Sphere = ({
         color = "red"
     }
 
-    const ref = useRef<Mesh>(null!)
+
 
     useFrame(() => {
-        if (!selected) return
+        if (!isLocal) return
 
-        if (forwardPressed) ref.current.position.z -= movement_speed
-        if (backwardPressed) ref.current.position.z += movement_speed
-        if (leftPressed) ref.current.position.x -= movement_speed
-        if (rightPressed) ref.current.position.x += movement_speed
+        let moved = false
+
+        if (forwardPressed) { ref.current.position.z -= movement_speed; moved = true; 
+            console.log("Se presiono W")
+        }
+        if (backwardPressed) { ref.current.position.z += movement_speed; moved = true; }
+        if (leftPressed) { ref.current.position.x -= movement_speed; moved = true; }
+        if (rightPressed) { ref.current.position.x += movement_speed; moved = true; }
+
+        if (moved){
+            socket.emit("move", [
+                ref.current.position.x,
+                ref.current.position.y,
+                ref.current.position.z,
+            ])
+        }
+    })
+
+    useFrame(() => {
+        if (!isLocal) {
+            const targetPosition = new Vector3(positionX, positionY, positionZ)
+
+            ref.current.position.lerp(targetPosition, 0.1)
+        }
     })
 
     return (
         <mesh ref={ref}
-        position={[0, 0, 0]}
+        position={[positionX, positionY, positionZ]}
         onPointerEnter={(e) => {
             e.stopPropagation()
             setIsHovered(true)
@@ -75,7 +104,7 @@ export const Sphere = ({
         
         <ambientLight />
         <sphereGeometry args={[0.5, 64, 64]} />
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial color={isLocal ? "purple" : color} />
 
         </mesh>
     )
