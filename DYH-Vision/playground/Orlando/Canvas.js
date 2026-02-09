@@ -4,7 +4,25 @@ const ctx = canvas.getContext("2d");
 let drawing = false;
 let start = false;
 
-//  FUNCION NUEVA PARA CÁLCULO DE MASA Y CENTROIDE
+//  FUNCIÓN PARA HACERLO OBJETO 
+
+function makeObj(x, y, M){
+    let Dibujo = {
+        centroide : {x : 0, y : 0},
+        masa : 0
+    }
+
+    Dibujo.centroide.x = x;
+    Dibujo.centroide.y = y;
+    Dibujo.masa = M;
+
+    const json = JSON.stringify(Dibujo);
+
+    console.log("El objeto ya se guardo papoy :D");
+    console.log(json);
+}
+
+//  Función para cálculos
 
 function PixelProcessing(PixelData){
     let MasaTotal = 0;
@@ -37,15 +55,13 @@ function PixelProcessing(PixelData){
         Ycentro = ySuma / MasaTotal;
     }
     
-    let Centroide = [Xcentro, Ycentro];
-
     document.getElementById('masa').innerText = MasaTotal.toFixed(2);
     document.getElementById('centroide').innerText = `(${Xcentro.toFixed(2)}, ${Ycentro.toFixed(2)})`;
 
-    return { x: Xcentro, y: Ycentro }
+    return { x: Xcentro, y: Ycentro, M: MasaTotal }
 }
 
-function drawCentroid(Xcentro, Ycentro){ // Se dibuja el centroide en el dibujo y se vea insano
+function drawCentroid(Xcentro, Ycentro){
     ctx.beginPath();
     ctx.arc(Xcentro, Ycentro, 5, 0 ,2 * Math.PI);
     ctx.fillStyle = "red";
@@ -71,8 +87,10 @@ Save.addEventListener("click", (e) => {
     const ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const PixelData = ImageData.data;
 
-    const centroide = PixelProcessing(PixelData); // Aqui se usa la papufunción B)
+    const centroide = PixelProcessing(PixelData); 
     drawCentroid(centroide.x, centroide.y);
+
+    makeObj(centroide.x, centroide.y, centroide.M); // Aqui se usa la papufunción B)
 });
 
 
