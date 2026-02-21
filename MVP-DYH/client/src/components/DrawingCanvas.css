@@ -1,0 +1,139 @@
+/* src/components/DrawingCanvas.css */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Patrick+Hand&display=swap');
+
+.genesis-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* CAMBIO 1: Más espacio entre las barras y el papel */
+  gap: 60px; 
+  
+  height: 100vh;
+  background-color: #e0e5ec;
+  font-family: 'Fredoka', sans-serif;
+  
+  /* CAMBIO 2: Asegurar que ocupe buen ancho pero sin pegarse a los bordes de la pantalla */
+  width: 100%;
+  padding: 0 40px; /* Margen de seguridad a los lados de la pantalla */
+  box-sizing: border-box;
+}
+/* --- Título Bonito --- */
+.canvas-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.canvas-title {
+  font-family: 'Patrick Hand', cursive; /* Letra tipo mano */
+  font-size: 2.5rem;
+  color: #555;
+  margin: 0;
+  text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+}
+
+/* --- Barras Laterales (Herramientas y Colores) --- */
+.toolbar-left, .palette-right {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff; /* Efecto Neumorfismo suave */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.tool-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+}
+
+.icon-grid {
+  display: flex;
+  flex-direction: column; /* Botones en columna para ahorrar espacio */
+  gap: 12px;
+}
+
+.tool-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 12px;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 2px 2px 5px #d1d1d1, inset -2px -2px 5px #ffffff;
+}
+
+.tool-btn:hover {
+  transform: translateY(-2px);
+  background: #fff;
+}
+
+.tool-btn.active {
+  background: #d4e6f1; /* Azulito cuando está seleccionado */
+  box-shadow: inset 2px 2px 5px #a8b8c1, inset -2px -2px 5px #ffffff;
+  color: #007AFF;
+}
+/* --- Área Central --- */
+.canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  
+  /* CAMBIO 3: Permitir que el canvas crezca visualmente */
+  width: auto; 
+}
+
+/* Aseguramos que el canvas no se salga si la pantalla es pequeña */
+canvas {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  cursor: crosshair;
+  max-width: 100%; /* Responsive básico */
+}
+
+/* Botón Listo */
+.btn-invocar {
+  margin-top: 20px;
+  background: linear-gradient(145deg, #a8e6cf, #dcedc1);
+  color: #444;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  border: none;
+  padding: 12px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+  transition: transform 0.1s;
+}
+
+.btn-invocar:active {
+  transform: scale(0.96);
+}
+
+/* Colores */
+.color-swatch {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.color-swatch.active {
+  transform: scale(1.2);
+  border-color: #555;
+}
