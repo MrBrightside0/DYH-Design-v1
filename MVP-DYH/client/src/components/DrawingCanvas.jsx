@@ -93,9 +93,9 @@ const DrawingCanvas = () => {
   const handleInvocar = async  () => {
     
     // Código para exportar el dibujo y poder pasarlo al render
-    const dataUrl = canvas.toDataURL('image/png');
+    const dataAvatar = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = dataUrl;
+    link.href = dataAvatar;
     link.download = 'Avatar.png';
 
 
@@ -123,9 +123,10 @@ const DrawingCanvas = () => {
     class: characterClass,
     stats: stats,
     color: color,
-    dibujo: dataUrl // Aquí se guarda el dibujo junto a las stats del personaje
+    dibujo: dataAvatar // Aquí se guarda el dibujo junto a las stats del personaje
     };
 
+    // Coso para mandar el dibujo que está dentro del JSON hacia el archivo Python donde se procesará y se hará el render 3D
     try {
       const response = await fetch("http://localhost:8000/process-3d", {
         method: "POST",
