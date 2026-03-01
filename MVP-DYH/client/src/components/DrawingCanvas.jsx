@@ -89,8 +89,17 @@ const DrawingCanvas = () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
-  // --- Generar JSON ---
-  const handleInvocar = () => {
+  // Darle click a listo
+  const handleInvocar = async  () => {
+    
+    // Código para exportar el dibujo y poder pasarlo al render
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'Avatar.png';
+
+
+    // Función del equipo anterior para calcular las stats y generar el JSON
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -113,9 +122,24 @@ const DrawingCanvas = () => {
     playerId: "socket_id_" + Math.floor(Math.random() * 999),
     class: characterClass,
     stats: stats,
-    color: color
-};
+    color: color,
+    dibujo: dataUrl // Aquí se guarda el dibujo junto a las stats del personaje
+    };
 
+    try {
+      const response = await fetch("http://localhost:8000/process-3d", {
+        method: "POST",
+        headers: {"Content-Type": "aplication/json"},
+        body: JSON.stringify(characterData)
+      });
+
+      const data = await response.json();
+      console.log("Respuesta del servidor: ", data.message);
+      alert("Procesando Dibujo!!");
+    } catch(error){
+      console.error("No se pudo mandar el papoy: ", error)
+    }
+  
     console.log("--- JSON GÉNESIS ---");
     console.log(JSON.stringify(characterData, null, 2));
     alert(`¡Personaje Creado!
@@ -123,7 +147,7 @@ const DrawingCanvas = () => {
       HP: ${stats.hp}
       Velocidad: ${stats.speed}
       Escala: ${stats.scale}`);
-    };
+  };
 
   return (
     <div className="genesis-container">
@@ -148,7 +172,7 @@ const DrawingCanvas = () => {
             >🧼</button>
 
              {/* Spray */}
-             <button 
+            <button 
               className={`tool-btn ${tool === 'spray' ? 'active' : ''}`}
               onClick={() => setTool('spray')}
               title="Spray"

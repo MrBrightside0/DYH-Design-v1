@@ -34,7 +34,7 @@ export const calculateStats = (drawingArea, canvasWidth, canvasHeight) => {
 // Aquí con los stats ya impuestos se le da una clasificación al dibujo
 export const classifyCharacter = (stats) => {
   const { hp, speed, mass, scale } = stats;
-   
+
   // 1. Torre (Demasiado grande)
   if (scale >= 2.3){
     return "Torre";
