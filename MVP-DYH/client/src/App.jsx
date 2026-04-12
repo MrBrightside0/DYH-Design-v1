@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h1>MVP - Squad Génesis</h1>
+      <h1>MVP - DYH</h1>
       <DrawingCanvas />
     </div>
   );

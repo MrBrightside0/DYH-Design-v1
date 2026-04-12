@@ -17,8 +17,8 @@ const DrawingCanvas = () => {
     const canvas = canvasRef.current;
     
     // CAMBIO AQUÍ: De 500 a 800 para hacerlo panorámico (Wide)
-    canvas.width = 800; 
-    canvas.height = 500; // La altura se queda igual o la subes a 600 si quieres
+    canvas.width = 512; 
+    canvas.height = 512; // La altura se queda igual o la subes a 600 si quieres
     
     const ctx = canvas.getContext("2d");
     ctx.lineCap = "round";
@@ -93,14 +93,15 @@ const DrawingCanvas = () => {
   const handleInvocar = async  () => {
     
     // Código para exportar el dibujo y poder pasarlo al render
+    const canvas = canvasRef.current;
     const dataAvatar = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = dataAvatar;
     link.download = 'Avatar.png';
+    link.click(); // Coso para descargar IMPORTANTE BORRARLO 
 
 
     // Función del equipo anterior para calcular las stats y generar el JSON
-    const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
@@ -128,9 +129,9 @@ const DrawingCanvas = () => {
 
     // Coso para mandar el dibujo que está dentro del JSON hacia el archivo Python donde se procesará y se hará el render 3D
     try {
-      const response = await fetch("http://localhost:8000/process-3d", {
+      const response = await fetch("http://localhost:8000/process_Image", {
         method: "POST",
-        headers: {"Content-Type": "aplication/json"},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(characterData)
       });
 
