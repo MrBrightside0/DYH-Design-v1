@@ -98,8 +98,6 @@ const DrawingCanvas = () => {
     const link = document.createElement('a');
     link.href = dataAvatar;
     link.download = 'Avatar.png';
-    link.click(); // Coso para descargar IMPORTANTE BORRARLO 
-
 
     // Función del equipo anterior para calcular las stats y generar el JSON
     const ctx = canvas.getContext("2d");
