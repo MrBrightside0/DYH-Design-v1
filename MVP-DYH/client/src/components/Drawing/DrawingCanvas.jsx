@@ -143,7 +143,7 @@ const DrawingCanvas = ({ onComplete }) => {
     } catch(error){
       console.error("No se pudo mandar el papoy: ", error)
       console.error('Se sustituyó el sprite por el dibujo')
-      onComplete(characterClass, stats, dataAvatar, dataAvatar);
+      onComplete(characterClass, stats, dataAvatar, dataAvatar); // Coso para que si no se procesa la imagen, se usa el dibujo como sprite
     }
   
     console.log("--- JSON GÉNESIS ---"); // ESTO SE PUEDE BORRAR PAPOY AAAAAAA
