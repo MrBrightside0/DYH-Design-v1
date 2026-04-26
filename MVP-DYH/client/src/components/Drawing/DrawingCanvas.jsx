@@ -1,9 +1,9 @@
 // src/components/DrawingCanvas.jsx
 import { useRef, useState, useEffect } from "react";
-import { calculateStats, classifyCharacter } from "../utils/gameRules";
+import { calculateStats, classifyCharacter } from "../../utils/gameRules";
 import "./DrawingCanvas.css";
 
-const DrawingCanvas = () => {
+const DrawingCanvas = ({ onComplete }) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   
@@ -133,14 +133,20 @@ const DrawingCanvas = () => {
         body: JSON.stringify(characterData)
       });
 
-      const data = await response.json();
-      console.log("Respuesta del servidor: ", data.message);
-      alert("Procesando Dibujo!!");
+      const sprites = await response.json();
+
+      // Condicional nuevo para llamar a onComplete para pasar los datos a App.jsx y de ahí pasarlo a las pantallas necesarias
+      if (onComplete){
+        onComplete(characterClass, stats, dataAvatar, `data:image/png;base64,${sprites}`);
+      }
+
     } catch(error){
       console.error("No se pudo mandar el papoy: ", error)
+      console.error('Se sustituyó el sprite por el dibujo')
+      onComplete(characterClass, stats, dataAvatar, dataAvatar);
     }
   
-    console.log("--- JSON GÉNESIS ---");
+    console.log("--- JSON GÉNESIS ---"); // ESTO SE PUEDE BORRAR PAPOY AAAAAAA
     console.log(JSON.stringify(characterData, null, 2));
     alert(`¡Personaje Creado!
       Clase: ${characterClass}
