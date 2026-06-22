@@ -13,6 +13,7 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { setHeapSnapshotNearHeapLimit } from 'v8';
 
 /*
  * 1. INICIALIZAR SERVIDOR HTTP (EXPRESS)
@@ -45,6 +46,9 @@ app.get('/', (_req, res) => {
   res.send('DYH Game Server Running');
 });
 
+//Objeto para registrar al cliente conectado
+const jugadoresConectados = {};
+
 /*
  * 4. MANEJO DE CONEXIONES WEBSOCKET
  *    'connection' se dispara cada vez que un cliente establece una
@@ -59,20 +63,52 @@ app.get('/', (_req, res) => {
  */
 io.on('connection', (socket) => {
   const playerId = socket.id;
-
   console.log(`Jugador conectado: ${playerId}`);
 
-  // Enviar al cliente su playerId al instante
-  socket.emit('playerId', { playerId });
+  //Se registra al cliente junto con sus propiedades iniciales
+  socket.on('registerPlayer', (stats) => {
+    if(stats.hp !== undefined && stats.speed !== undefined && stats.scale !== undefined && stats.mass !== undefined){ //el if es para verificar que los datos entrantes esten definidos
+      jugadoresConectados[playerId] = {
+        playerId: playerId,
+        stats: stats, //se utilizan los stats ya calculados en gameRules
+        color: '#FF0000',
+        position: {
+          x: 0, //desconozco si hay coordenadas exactas para el spawn del jugador
+          y: 0
+        }
+      }
+        //Enviar al jugador su playerId al instante
+        socket.emit('playerId', { playerId });
 
-  /*
-   * 5. MANEJO DE DESCONEXIÓN
-   *    Se dispara cuando el cliente cierra la pestaña, pierde conexión,
-   *    o llama a socket.disconnect(). Aquí se debe limpiar el estado
-   *    del jugador: removerlo de salas, notificar a otros, liberar recursos.
-   */
-  socket.on('disconnect', () => {
-    console.log(`Jugador desconectado: ${playerId}`);
+        //Recepcion en un cambio en el movimiento y retransmision de la posicion a los demas jugadores
+        socket.on('playerMove', (data) => {
+          jugadoresConectados[playerId].position = {x: data.x, y: data.y};
+          socket.broadcast.emit('retransmision', {
+            playerId: playerId,
+            position: jugadoresConectados[playerId].position
+          });
+        });
+
+        /*
+        * 5. MANEJO DE DESCONEXIÓN
+        *    Se dispara cuando el cliente cierra la pestaña, pierde conexión,
+        *    o llama a socket.disconnect(). Aquí se debe limpiar el estado
+        *    del jugador: removerlo de salas, notificar a otros, liberar recursos.
+        */
+       socket.on('disconnect', () => {
+        console.log(`Jugador desconectado: ${playerId}`);
+
+        //Avisa la eliminacion del jugador a los demas jugadores
+        socket.broadcast.emit('disconnectPlayer', {playerId: playerId});
+        
+        //Elimina de la memoria los datos del jugador
+        delete jugadoresConectados[playerId];
+        });
+      }
+      else {
+        console.log('ERROR: Datos entrantes incompletos.');
+        socket.disconnect();
+      }
   });
 });
 
