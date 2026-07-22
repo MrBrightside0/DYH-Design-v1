@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import DrawingCanvas from './components/Drawing/DrawingCanvas';
 import Arena from './components/Arena/Arena';
+import Chat from './components/Chat/Chat';
 import './App.css';
 
 function App() {
@@ -11,12 +12,26 @@ function App() {
   // Se reciben los datos del objeto JSON de DrawingCanvas.jsx al terminar de procesar el dibujo
   const handleDrawingComplete = (characterClass, stats, draw, sprites) => {
     setCharacterData({characterClass, stats, draw, sprites})
-    setScreen('arena')  // Se pone la pantalla arena
-  }
+    setScreen('arena') // Se pone la pantalla arena
+  };
 
-  // Coso para manejar el cambio de pantlallas
-  if (screen === 'drawing') return <DrawingCanvas onComplete = {handleDrawingComplete} />
-  if (screen === 'arena') return <Arena character = {characterData} />
+  //Zona de dibujo
+  if (screen === 'drawing') return <DrawingCanvas onComplete={handleDrawingComplete} />
+
+  //Zona de arena y chat
+  if (screen === 'arena') {
+    return (
+      //Contenedor que envuelve a la arena y el chat, evita que haya errores de acomodo entre los dos
+      <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+        
+        <Arena character={characterData} />  {/*Se muestra la arena*/}
+        
+        <Chat/>  {/*Se muestra el chat*/}
+        
+      </div>
+    );
+  }
+  return null;
 }
 
 export default App;

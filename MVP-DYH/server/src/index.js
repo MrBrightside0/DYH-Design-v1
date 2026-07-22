@@ -110,6 +110,14 @@ io.on('connection', (socket) => {
         socket.disconnect();
       }
   });
+
+  //Sockets para comunicacion del chat
+  socket.on('message', (msg) => {
+    socket.broadcast.emit('message', {
+      body: msg.body,
+      user: msg.user
+    })
+  });
 });
 
 /*
