@@ -137,7 +137,7 @@ const DrawingCanvas = ({ onComplete }) => {
 
       // Condicional nuevo para llamar a onComplete para pasar los datos a App.jsx y de ahí pasarlo a las pantallas necesarias
       if (onComplete){
-        onComplete(characterClass, stats, dataAvatar, `data:image/png;base64,${sprites}`);
+        onComplete(characterClass, stats, dataAvatar, `data:image/png;base64,${sprites}`, color);
       }
 
     } catch(error){

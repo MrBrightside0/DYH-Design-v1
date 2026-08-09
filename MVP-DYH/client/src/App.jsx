@@ -8,10 +8,11 @@ import './App.css';
 function App() {
   const [screen, setScreen] = useState('drawing')  // Se pone de default el estado 'drawing'
   const [characterData, setCharacterData] = useState(null)
+  const [username, setUsername] = useState('');
 
   // Se reciben los datos del objeto JSON de DrawingCanvas.jsx al terminar de procesar el dibujo
-  const handleDrawingComplete = (characterClass, stats, draw, sprites) => {
-    setCharacterData({characterClass, stats, draw, sprites})
+  const handleDrawingComplete = (characterClass, stats, draw, sprites, color) => {
+    setCharacterData({characterClass, stats, draw, sprites, color})
     setScreen('arena') // Se pone la pantalla arena
   };
 
@@ -24,9 +25,9 @@ function App() {
       //Contenedor que envuelve a la arena y el chat, evita que haya errores de acomodo entre los dos
       <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
         
-        <Arena character={characterData} />  {/*Se muestra la arena*/}
+        <Arena character={characterData} username={username} />  {/*Se muestra la arena*/}
         
-        <Chat/>  {/*Se muestra el chat*/}
+        <Chat username={username} setUsername={setUsername} />  {/*Se muestra el chat*/}
         
       </div>
     );

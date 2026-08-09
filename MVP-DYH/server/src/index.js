@@ -66,28 +66,42 @@ io.on('connection', (socket) => {
   console.log(`Jugador conectado: ${playerId}`);
 
   //Se registra al cliente junto con sus propiedades iniciales
-  socket.on('registerPlayer', (stats) => {
-    if(stats.hp !== undefined && stats.speed !== undefined && stats.scale !== undefined && stats.mass !== undefined){ //el if es para verificar que los datos entrantes esten definidos
+  socket.on('registerPlayer', (payload) => {
+    // payload expected: { stats, color?, username?, sprites? }
+    const { stats, color, username, sprites } = payload || {};
+    if(stats && stats.hp !== undefined && stats.speed !== undefined && stats.scale !== undefined && stats.mass !== undefined){
+      // Assign a color if the client didn't send one
+      const assignedColor = color || (`#${Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0')}`);
+
       jugadoresConectados[playerId] = {
         playerId: playerId,
         stats: stats, //se utilizan los stats ya calculados en gameRules
-        color: '#FF0000',
+        color: assignedColor,
+        username: username || `Player-${playerId.slice(0,4)}`,
+        sprites: sprites || null,
         position: {
-          x: 0, //desconozco si hay coordenadas exactas para el spawn del jugador
+          x: 0,
           y: 0
         }
       }
-        //Enviar al jugador su playerId al instante
-        socket.emit('playerId', { playerId });
 
-        //Recepcion en un cambio en el movimiento y retransmision de la posicion a los demas jugadores
-        socket.on('playerMove', (data) => {
+      //Enviar al jugador su playerId y los jugadores ya conectados
+      socket.emit('playerId', { playerId });
+      socket.emit('currentPlayers', jugadoresConectados);
+
+      //Avisar a los demas sobre el nuevo jugador
+      socket.broadcast.emit('newPlayer', jugadoresConectados[playerId]);
+
+      //Recepcion en un cambio en el movimiento y retransmision de la posicion a los demas jugadores
+      socket.on('playerMove', (data) => {
+        if (jugadoresConectados[playerId]) {
           jugadoresConectados[playerId].position = {x: data.x, y: data.y};
           socket.broadcast.emit('retransmision', {
             playerId: playerId,
             position: jugadoresConectados[playerId].position
           });
-        });
+        }
+      });
 
         /*
         * 5. MANEJO DE DESCONEXIÓN
