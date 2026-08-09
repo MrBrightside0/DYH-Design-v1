@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import socket from '../../socket';
 import "./Chat.css";
 
-const socket = io("http://localhost:3000");
-
-export const Chat = () => {
+export const Chat = ({ username, setUsername }) => {
     const [message, setMessage] = useState('');
-    const [username, setUsername] = useState('');
     const [listMessages, setListMessages] = useState([]);
     const [open, setOpen] = useState(false);
     const contenedor = useRef(null);
@@ -16,7 +13,7 @@ export const Chat = () => {
         e.preventDefault();
 
         //Verifica que no se manden mensajes sin nombre de usuario o mensajes en blanco
-        if(message.trim() === "" || username.trim() === "") return;
+        if(message.trim() === "" || (username || '').trim() === "") return;
         
         socket.emit('message', {body: message, user: username});
         const newMsg = {
